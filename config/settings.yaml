@@ -1,0 +1,84 @@
+# Mega-Environment Classification Project Configuration
+# Copy this file to config/local_settings.yaml and add your GEE project ID
+# config/local_settings.yaml is gitignored
+
+# Google Earth Engine
+gee:
+  project_id: "your-gee-project-id"  # Set in config/local_settings.yaml
+
+# Punjab Districts (36 districts)
+districts:
+  boundary_file: "data/raw/punjab_districts.geojson"
+  # District names for reference
+  names: [
+    "Attock", "Bahawalnagar", "Bahawalpur", "Bhakkar", "Chakwal", "Chiniot",
+    "Dera Ghazi Khan", "Faisalabad", "Gujranwala", "Gujrat", "Hafizabad",
+    "Jhang", "Jhelum", "Kasur", "Khanewal", "Khushab", "Lahore", "Layyah",
+    "Lodhran", "Mandi Bahauddin", "Mianwali", "Multan", "Muzaffargarh",
+    "Nankana Sahib", "Narowal", "Okara", "Pakpattan", "Rahim Yar Khan",
+    "Rajanpur", "Rawalpindi", "Sahiwal", "Sargodha", "Sheikhupura",
+    "Sialkot", "Toba Tek Singh", "Vehari"
+  ]
+
+# Phenological windows for wheat in Punjab (approximate calendar dates)
+phenology:
+  sowing_to_emergence: ["11-01", "11-20"]
+  vegetative: ["11-21", "12-31"]
+  pre_flowering: ["01-01", "02-15"]
+  flowering: ["02-16", "03-15"]
+  grain_fill: ["03-16", "04-15"]
+
+# Data extraction parameters
+extraction:
+  years: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+  era5_dataset: "ECMWF/ERA5_LAND/DAILY_AGGR"  # Higher resolution
+  soilgrids_dataset: "OpenLandMap/SOL/SOL_ORGANIC-CARBON_USDA-6A1C_M/v02"
+  soilgrids_ph_dataset: "OpenLandMap/SOL/SOL_PH-H2O_USDA-4C1A2A_M/v02"
+  srtm_dataset: "USGS/SRTMGL1_003"
+
+# ERA5 variables to extract
+era5_variables:
+  - "temperature_2m"
+  - "temperature_2m_max"
+  - "temperature_2m_min"
+  - "total_precipitation_sum"
+  - "surface_solar_radiation_downwards_sum"
+  - "dewpoint_temperature_2m"
+
+# OpenLandMap soil properties (0-30cm topsoil)
+soil_properties:
+  - "organic_carbon"
+  - "phh2o"
+
+# Topography
+topography:
+  - "elevation"
+  - "slope"
+
+# PCA settings
+pca:
+  variance_threshold: 0.85  # Keep components explaining 85% variance
+  n_components_max: 10
+
+# Clustering settings
+clustering:
+  algorithm: "kmeans"  # or "hierarchical"
+  k_range: [3, 4, 5, 6, 7, 8, 9, 10]
+  random_state: 42
+  n_init: 20
+
+# Cross-validation
+validation:
+  n_splits: 5
+  test_size: 0.25
+  random_state: 42
+
+# Output paths
+output:
+  covariate_table: "data/processed/covariate_table.parquet"
+  pca_model: "data/processed/pca_model.pkl"
+  scaler: "data/processed/scaler.pkl"
+  cluster_model: "data/processed/cluster_model.pkl"
+  district_clusters: "data/processed/district_clusters.csv"
+  validation_results: "data/processed/validation_results.json"
+  recommendations: "data/processed/recommendations.csv"

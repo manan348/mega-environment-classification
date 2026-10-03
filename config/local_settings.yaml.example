@@ -1,0 +1,5 @@
+# Local configuration override (gitignored)
+# Copy config/settings.yaml here and modify with your credentials
+
+gee:
+  project_id: "your-gee-project-id"
